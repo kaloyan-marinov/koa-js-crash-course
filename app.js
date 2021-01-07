@@ -1,6 +1,9 @@
 const Koa = require("koa");
+const json = require("koa-json");
 
 const app = new Koa();
+
+app.use(json());
 
 /*
 simple piece of middleware, just to output something
