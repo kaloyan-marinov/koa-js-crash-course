@@ -62,6 +62,8 @@ async function add(ctx) {
 
 router.get("/test", (ctx) => (ctx.body = `Hello ${ctx.user}!`));
 
+router.get("/greet/:name", (ctx) => (ctx.body = `Hello ${ctx.params.name}!`));
+
 /* Router Middleware */
 app.use(router.routes()).use(router.allowedMethods());
 
