@@ -3,6 +3,7 @@ const KoaRouter = require("koa-router");
 const json = require("koa-json");
 const path = require("path"); /* a core Node.js module for working filepaths */
 const render = require("koa-ejs"); /* the template engine */
+const bodyParser = require("koa-bodyparser");
 
 const app = new Koa();
 const router = new KoaRouter();
@@ -12,6 +13,8 @@ const things = ["My Family", "Programming", "Music"];
 
 /* JSON Prettier Middleware */
 app.use(json());
+/* BodyParser Middleware */
+app.use(bodyParser());
 
 /*
 simple piece of middleware, just to output something
@@ -30,7 +33,9 @@ render(app, {
 
 // Routes
 router.get("/", index);
+/* You can use the same route for different methods / request-types. */
 router.get("/add", showAdd);
+router.post("/add", add);
 
 // List of things
 async function index(ctx) {
@@ -40,8 +45,16 @@ async function index(ctx) {
   });
 }
 
+// Show add page
 async function showAdd(ctx) {
   await ctx.render("add");
+}
+
+// Add thing
+async function add(ctx) {
+  const body = ctx.request.body;
+  things.push(body.objectOfLove);
+  ctx.redirect("/");
 }
 
 router.get("/test", (ctx) => (ctx.body = "Hello Test!"));
